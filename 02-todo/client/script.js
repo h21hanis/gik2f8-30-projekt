@@ -1,14 +1,14 @@
-list.Anställd.addEventListener('keyup', (e) => validateField(e.target));
-list.Anställd.addEventListener('blur', (e) => validateField(e.target));
+lista.Anställd.addEventListener('keyup', (e) => validateField(e.target));
+lista.Anställd.addEventListener('blur', (e) => validateField(e.target));
 
-list.Personnummer.addEventListener('input', (e) => validateField(e.target));
-list.Personnummer.addEventListener('blur', (e) => validateField(e.target));
+lista.Personnummer.addEventListener('input', (e) => validateField(e.target));
+lista.Personnummer.addEventListener('blur', (e) => validateField(e.target));
 
-list.Telefonnummer.addEventListener('input', (e) => validateField(e.target));
-list.Telefonnummer.addEventListener('blur', (e) => validateField(e.target));
+lista.Telefonnummer.addEventListener('input', (e) => validateField(e.target));
+lista.Telefonnummer.addEventListener('blur', (e) => validateField(e.target));
 
-list.addEventListener('submit', onSubmit);
-const packingListElement = document.getElementById('packingList');
+lista.addEventListener('submit', onSubmit);
+const the_listElement = document.getElementById('the_list');
 
 let AnställdValid = true;
 let PersonnummerValid = true;
@@ -24,33 +24,33 @@ function validateField(field) {
     case 'Anställd': {
       if (value.length < 2) {
         AnställdValid = false;
-        validationMessage = "Fältet 'Namn' måste innehålla minst 2 tecken.";
+        validationMessage = "'Namn och afternamn' måste innehålla minst 2 tecken.";
       } else if (value.length > 100) {
         AnställdValid = false;
         validationMessage =
-          "Fältet 'Namn' får inte innehålla mer än 100 tecken.";
+          "Fältet 'Namn och efternamn' får inte innehålla mer än 100 tecken.";
       } else {
         AnställdValid = true;
       }
       break;
     }
     case 'Personnummer': {
-      if (value.length > 12) {
+      if (value.length < 12) {
         PersonnummerValid = false;
-        validationMessage = "'personnummer' måste innehålla 12 tecken till exemple 20010521XXXX.";
+        validationMessage = "'personnumemer' måste innehålla 12 tecken.";
       } else {
         PersonnummerValid = true;
       }
       break;
     }
     case 'Telefonnummer': {
-      if (value.length < 2) {
+      if (value.length < 10) {
         TelefonnummerValid = false;
-        validationMessage = "Fältet 'Telefonnummer' måste innehålla minst 2 tecken.";
+        validationMessage = "'Telefonnummer' måste innehålla minst 10 tecken.";
       } else if (value.length > 20) {
         TelefonnummerValid = false;
         validationMessage =
-          "Fältet 'Telefonnummer' får inte innehålla mer än 20 tecken.";
+          "'Telefonnummer' får inte innehålla mer än 20 tecken.";
       } else {
         TelefonnummerValid = true;
       }
@@ -76,9 +76,9 @@ function onSubmit(e) {
 
 function saveAnställd() {
   const Anställd = {
-    Anställd: list.Anställd.value,
-    Personnummer: list.Personnummer.value,
-    Telefonnummer: list.v.value,
+    Anställd: lista.Anställd.value,
+    Personnummer: lista.Personnummer.value,
+    Telefonnummer: lista.Telefonnummer.value,
   };
    
 api.create(Anställd).then((Anställd) => {
@@ -88,35 +88,22 @@ api.create(Anställd).then((Anställd) => {
     }
   });
 
-  list.Anställd.value="" ;
-  list.Personnummer.value="" ;
-  list.Telefonnummer.value="";
+  lista.Anställd.value="" ;
+  lista.Personnummer.value="" ;
+  lista.Personnummer.value="";
 }
 
 function renderList() {
   console.log('rendering');
-  api.getAll().then((Anställd) => {
-    packingListElement.innerHTML = '';
+  api.getAll().then((Anställds) => {
+    the_listElement.innerHTML = '';
 
-    if (Anställd && Anställd.length > 0) {
-      Anställd.forEach((Anställd) => {
-        packingListElement.insertAdjacentHTML('beforeend', renderAnställd(Anställd));
+    if (Anställds && Anställds.length > 0) {
+      Anställds.forEach((Anställd) => {
+        the_listElement.insertAdjacentHTML('beforeend', renderAnställd(Anställd));
       });
     }
   });
-}
-
-
-function renderAnställd({ id, Anställd, Personnummer, Telefonnummer}) {
-let html = `
-<li class="flex select-none mt-2 pt-4 border-b bg-white/90 rounded-lg">
-  <div class="flex justify-between w-5/6">
-    <p class="mb-6 ml-8 mr-30 w-1/3">${Anställd}</p><p class=" mb-6 ml-8 w-1/3">${Personnummer}</p> <p class="mb-6 ml-8 w-1/3">${Telefonnummer}</p>
-  </div>
-  <div>
-  <button onclick="deleteAnställd(${id})" class="inline-block ml-10 rounded-md bg-yellow-500 hover:bg-yellow-400 px-4 py-1">Ta bort</button>
-</div>`;
-return html;
 }
 
 
@@ -128,3 +115,18 @@ function deleteAnställd(id) {
 
 
 renderList();
+
+function renderAnställd({ id, Anställd, Personnummer, Telefonnummer}) {
+  let html = `
+  <section class="flex gap-10 xl:w-4/5 h-1/5  xl:mx-auto bg-white/50 p-5 rounded-lg">
+    <li class="mx-2"><b>ID</b><br> ${id}</li>
+    <li class="mx-2"><b>Namn</b><br> ${Anställd}</li>
+    <li class="mx-2"><b>personnumer</b><br> ${Personnummer}</li>
+    <li class="mx-2"><b>telefonnummer</b><br> ${Telefonnummer}</li>
+    </div>
+    <div>
+    <button onclick="deleteAnställd(${id})" class="bg-yellow-500 hover:bg-yellow-400 px-4">Ta bort</button>
+  </div></section>`
+  ;
+  return html;
+  }

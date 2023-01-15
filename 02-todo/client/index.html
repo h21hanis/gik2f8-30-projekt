@@ -11,21 +11,20 @@
   <link rel="shortcut icon"
         href="data:image/x-icon;"
         type="image/x-icon" />
-  <title>Anställda-applikation</title>
+  <title>Anställda</title>
 </head>
-
 <body>
   <main id="root"
-        class="pt-24 bg-gradient-to-tr from-sky-700 to-slate-300 min-h-screen">
-    <h1 class="text-center mb-10 text-7xl text-white">Anställda</h1>
-    <section class="flex gap-10 xl:w-4/5 h-1/5  xl:mx-auto bg-white/50 p-5 rounded-lg">
-      <section class="w-1/3">
-        <h2 class="mb-6 text-3xl text-slate-900">Lägg till ny anställd:</h2>
-        <form id="list"
-              name="list">
-          <section class="mb-2">
-            <label class="block pr-5 mb-2 text-xl"
-                   for="title">Anställd</label>
+  class="pt-24 bg-gradient-to-tr from-red-500 to-green-400 min-h-screen">
+  <h1 class="text-center mb-12 text-7xl text-bold italic">Anmälning</h1>
+    <section class="flex gap-5 xl:w-4/8 h-1/5  xl:mx-auto bg-white/20 px-10 rounded-lg">
+      <section class="w-1/2">
+        <h2 class="mb-6 text-3xl text-slate-900 text-bold italic">Fyll i dina uppgifter:</h2>
+        <form id="lista"
+              name="lista">
+          <section class="mb-10">
+            <label class="block pr-5 mb-2 text-xl text-bold italic"
+                   for="title">Namn och Efternamn</label>
             <p class="message text-sm text-red-700 mb-2 hidden">
               Error message
             </p>
@@ -34,8 +33,8 @@
                    name="Anställd"
                    class="w-full bg-white/90 rounded-md border-slate-900 border-2 focus-within:outline-none focus:border-yellow-500 px-4 py-2" />
           </section>
-          <section class="mb-2">
-            <label class="block pr-5 mb-2 text-xl"
+          <section class="mb-10">
+            <label class="block pr-5 mb-2 text-xl text-bold italic"
                    for="description">Personnummer</label>
             <p class="tracking-wide message text-sm text-red-700 mb-2 hidden">
               Error message
@@ -46,9 +45,8 @@
             class="w-full bg-white/90 rounded-md border-slate-900 border-2 focus-within:outline-none focus:border-yellow-500 px-4 py-2" />
           </section>
 
-          <section class="mb-2">
-            <label class="block pr-5 mb-2 text-xl"
-                   for="description">Telefonnummer</label>
+          <section class="mb-10"><label class="block pr-5 mb-2 text-xl text-bold italic"
+            for="description">Telefonnummer</label>
             <p class="tracking-wide message text-sm text-red-700 mb-2 hidden">
               Error message
             </p>
@@ -58,28 +56,17 @@
             class="w-full bg-white/90 rounded-md border-slate-900 border-2 focus-within:outline-none focus:border-yellow-500 px-4 py-2" />
           </section>
           <button name="submit"
-                  class="tracking-widerounded-md bg-yellow-500 hover:bg-yellow-400 px-4 mt-2 py-1"
+          class="my-10 ml-12 box-border rounded-md tracking-widest font-bold text-yellow-900 bg-red-400 hover:bg-yellow-400 px-4 mt-2 py-2"
                   type="submit">
-            Lägg till
+            Anmäla
           </button>
         </form>
       </section>
-
-      <section class="flex-1 px-5"> 
-        <div class="flex justify-between w-5/6">
-          <h2 class="text-center mb-6 text-xl text-slate-900 ml-8 mr-30">Namn</h2>
-          <h2 class="text-center mb-6 text-xl text-slate-900 ml-20">Anställningsnummer</h2>
-          <h2 class="text-center mb-6 text-xl text-slate-900 mr-40">Telefonnummer</h2>
-        </div>
-       
-        <ul id="packingList">
-         
+        <ul id="the_list">
         </ul>
       </section>
-    </section>
   </main>
   <script src="Api.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>

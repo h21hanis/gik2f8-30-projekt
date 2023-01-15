@@ -33,4 +33,5 @@ class Api {
             method: "DELETE"
         }).then((result)=> result).catch((err) => console.log(err));
     }
+    
 }
