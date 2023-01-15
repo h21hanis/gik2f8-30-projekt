@@ -1,158 +1,130 @@
-todoForm.title.addEventListener("input", (e) => validateField(e.target));
-todoForm.title.addEventListener("blur", (e) => validateField(e.target));
-todoForm.description.addEventListener("input", (e) => validateField(e.target));
-todoForm.description.addEventListener("blur", (e) => validateField(e.target));
-todoForm.dueDate.addEventListener("input", (e) => validateField(e.target));
-todoForm.dueDate.addEventListener("blur", (e) => validateField(e.target));
+list.Anställd.addEventListener('keyup', (e) => validateField(e.target));
+list.Anställd.addEventListener('blur', (e) => validateField(e.target));
 
-todoForm.addEventListener("submit" , onSubmit);
+list.Personnummer.addEventListener('input', (e) => validateField(e.target));
+list.Personnummer.addEventListener('blur', (e) => validateField(e.target));
 
-const todoListElement = document.getElementById("todoList");
+list.Telefonnummer.addEventListener('input', (e) => validateField(e.target));
+list.Telefonnummer.addEventListener('blur', (e) => validateField(e.target));
 
-let titleValid = true;
-let descriptionValid = true;
-let dueDateValid = true;
+list.addEventListener('submit', onSubmit);
+const packingListElement = document.getElementById('packingList');
 
-
-const api = new Api("http://localhost:5000/tasks");
+let AnställdValid = true;
+let PersonnummerValid = true;
+let TelefonnummerValid = true;
 
 
+const api = new Api('http://localhost:5000/tasks');
 
-function validateField(field){
-    const {name, value} = field;
-
-    let = validationMessage = "" ;
-
-    switch(name) {
-        case "title": {
-            if(value.length < 2) {
-                titleValid = false;
-                validationMessage = "Fältet  'Titel' måste innehålla minst 2 tecken";
-            } else if(value > 100){
-                titleValid = false;
-                validationMessage = "Fältet  'Titel' får inte innehålla mer än 100 tecken";
-        } else {
-        titleValid = true;
-        }
-        break;
-        }
-        case "description": {
-            if(value.length > 500){
-                descriptionValid = false;
-                validationMessage = "Fältet  'beskrivning' får inte innehålla mer än 500 tecken";
-            } else {
-            descriptionValid = true;
-            }
-            break;
-        }
-        case "dueDate": {
-            if(value.length == 0 ){
-                descriptionValid = false;
-                validationMessage = "Fältet  'utfört senast' får inte lämnas tomt";
-            } else{
-        dueDateValid= true;
-            }
-        break;
-
-        }
-
+function validateField(field) {
+  const { name, value } = field;
+  let = validationMessage = '';
+  switch (name) {
+    case 'Anställd': {
+      if (value.length < 2) {
+        AnställdValid = false;
+        validationMessage = "Fältet 'Namn' måste innehålla minst 2 tecken.";
+      } else if (value.length > 100) {
+        AnställdValid = false;
+        validationMessage =
+          "Fältet 'Namn' får inte innehålla mer än 100 tecken.";
+      } else {
+        AnställdValid = true;
+      }
+      break;
     }
-
-    field.previousElementSibling.innerText = validationMessage;
-    field.previousElementSibling.classList.remove("hidden");
-
-    
-
+    case 'Personnummer': {
+      if (value.length > 12) {
+        PersonnummerValid = false;
+        validationMessage = "'personnummer' måste innehålla 12 tecken till exemple 20010521XXXX.";
+      } else {
+        PersonnummerValid = true;
+      }
+      break;
+    }
+    case 'Telefonnummer': {
+      if (value.length < 2) {
+        TelefonnummerValid = false;
+        validationMessage = "Fältet 'Telefonnummer' måste innehålla minst 2 tecken.";
+      } else if (value.length > 20) {
+        TelefonnummerValid = false;
+        validationMessage =
+          "Fältet 'Telefonnummer' får inte innehålla mer än 20 tecken.";
+      } else {
+        TelefonnummerValid = true;
+      }
+      break;
+    }
+  }
+  
+  field.previousElementSibling.innerText = validationMessage;
+  field.previousElementSibling.classList.remove('hidden');
 }
-
-
 
 
 
 function onSubmit(e) {
+  e.preventDefault();
 
-    e.preventDefault();
+  if (AnställdValid && PersonnummerValid && TelefonnummerValid) {
+    console.log('Submit');
+    saveAnställd();
+  }
+}
 
-    if(titleValid && descriptionValid && dueDateValid){
-        console.log("submit");
-        saveTask();
+
+function saveAnställd() {
+  const Anställd = {
+    Anställd: list.Anställd.value,
+    Personnummer: list.Personnummer.value,
+    Telefonnummer: list.v.value,
+  };
+   
+api.create(Anställd).then((Anställd) => {
+  
+  if (Anställd) {
+      renderList();
     }
+  });
 
-    
- 
-};
-
-function saveTask() {
-    const task = {
-        title: todoForm.title.value,
-        description: todoForm.description.value,
-        dueDate: todoForm.dueDate.value,
-        completed : false,
-
-    };
-
-    api.create(task).then((task) => {
-    if(task){
-        renderList();
-    }} );
+  list.Anställd.value="" ;
+  list.Personnummer.value="" ;
+  list.Telefonnummer.value="";
 }
 
 function renderList() {
-    const sortList = [];
-    api.getAll().then((tasks) => {
-      todoListElement.innerHTML = '';
-      if (tasks && tasks.length > 0) {
-        tasks.forEach((task) => {
-            sortList.push(task);
-        });
-        sortList.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  console.log('rendering');
+  api.getAll().then((Anställd) => {
+    packingListElement.innerHTML = '';
 
-        sortList.forEach((task) => {
-          todoListElement.insertAdjacentHTML('beforeend', renderTask(task));
-        });
-      }
-    });
-  }
-
-
-function renderTask({ id, title, description, dueDate, completed }) {
-
-  const isChecked =  completed == true ? "checked" : "";
-  const colorChange = completed == true ? "text-green-700 rounded-xl opacity-60	bg-black border-4 border-black" : "";
-  const textChange = completed == true ? "text-green-500 text-lg font-extrabold" : "";
-  const textChangeTwo = completed == true ? "text-emerald-200" : "";
-
-
-  let html = `
-    <li class="select-none mt-2 py-2 border-b border-amber-300 ${colorChange}">
-      <div class="flex items-center p-1 " id=${id}>
-        <h3 class="mb-3 flex-1 text-xl font-bold text-pink-800 uppercase ${textChangeTwo}">${title}</h3>
-        <div>
-          <span>${dueDate}</span>
-          <button onclick="deleteTask(${id})" class="${textChange} inline-block bg-amber-500 text-xs text-amber-900 border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
-          <br>
-          <input onclick="completeTask(${id})" type="checkbox" id="completeBox" ${isChecked}>
-          <label class="${textChange}" for="completedBox">Utförd</label><br>
-        </div>
-      </div>`;
-  description &&
-    (html += `
-      <p class="ml-8 mt-2 text-xs italic ${textChangeTwo}">${description}</p>
-  `);
-  html += `
-    </li>`;
-
-  return html;
+    if (Anställd && Anställd.length > 0) {
+      Anställd.forEach((Anställd) => {
+        packingListElement.insertAdjacentHTML('beforeend', renderAnställd(Anställd));
+      });
+    }
+  });
 }
 
-function completeTask(id) {
-  const taskComplete = document.getElementById(id).querySelector('#completeBox').checked;
-  api.update(id, taskComplete).then(result => { renderList()});
+
+function renderAnställd({ id, Anställd, Personnummer, Telefonnummer}) {
+let html = `
+<li class="flex select-none mt-2 pt-4 border-b bg-white/90 rounded-lg">
+  <div class="flex justify-between w-5/6">
+    <p class="mb-6 ml-8 mr-30 w-1/3">${Anställd}</p><p class=" mb-6 ml-8 w-1/3">${Personnummer}</p> <p class="mb-6 ml-8 w-1/3">${Telefonnummer}</p>
+  </div>
+  <div>
+  <button onclick="deleteAnställd(${id})" class="inline-block ml-10 rounded-md bg-yellow-500 hover:bg-yellow-400 px-4 py-1">Ta bort</button>
+</div>`;
+return html;
 }
 
-function deleteTask(id) {
-    api.remove(id).then(result => {
-        renderList();
-    });
+
+function deleteAnställd(id) {
+  api.remove(id).then(() => {
+    renderList();
+  });
 }
+
+
 renderList();

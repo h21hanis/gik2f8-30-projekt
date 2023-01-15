@@ -67,36 +67,4 @@ app.delete("/tasks/:id", async(req, res) => {
         res.status(500).send({error: error.stack});
     }
 });
-
-app.put('/tasks/:id', async (req, res) => {
-    try {
-      const taskComplete = req.body.taskComplete;
-      const id = req.params.id;
-      const listBuffer = await fs.readFile('./tasks.json');
-      const currentTasks = JSON.parse(listBuffer);
-      if (taskComplete == true){
-      for(let i = 0; i < currentTasks.length; i++){
-        if(currentTasks[i]['id'] == id){
-          currentTasks[i]['completed'] = true;
-        }
-      }
-      await fs.writeFile('./tasks.json', JSON.stringify(currentTasks));
-      res.send({ message: `Uppgift med id ${id} uppdaterades` });
-    }
-      else if (taskComplete == false){
-        for(let i = 0; i < currentTasks.length; i++){
-          if(currentTasks[i]['id'] == id){
-            currentTasks[i]['completed'] = false;
-          }
-        }
-        await fs.writeFile('./tasks.json', JSON.stringify(currentTasks));
-        res.send({ message: `Uppgift med id ${id} uppdaterades` });
-    };
-    
-    } 
-    catch (error) {
-      res.status(500).send({ error: error.stack });
-    }
-  });
-
 app.listen(PORT, () => console.log("Server running on http://localhost:5000"));

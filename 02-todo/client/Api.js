@@ -33,16 +33,4 @@ class Api {
             method: "DELETE"
         }).then((result)=> result).catch((err) => console.log(err));
     }
-    
-    update(id, taskComplete) {
-        console.log(`Updating task with id ${id}`);
-        const JSONData = JSON.stringify({"taskComplete": taskComplete});
-        return fetch(`${this.url}/${id}`, {
-          method: 'PUT',
-          body: JSONData,
-          headers: {"Content-Type": "application/json"}
-        })
-          .then((result) => result)
-          .catch((err) => console.log(err));
-      }
-    }
+}
