@@ -1,9 +1,7 @@
 lista.Anställd.addEventListener('keyup', (e) => validateField(e.target));
 lista.Anställd.addEventListener('blur', (e) => validateField(e.target));
-
 lista.Personnummer.addEventListener('input', (e) => validateField(e.target));
 lista.Personnummer.addEventListener('blur', (e) => validateField(e.target));
-
 lista.Telefonnummer.addEventListener('input', (e) => validateField(e.target));
 lista.Telefonnummer.addEventListener('blur', (e) => validateField(e.target));
 
@@ -58,8 +56,7 @@ function validateField(field) {
     }
   }
   
-  field.previousElementSibling.innerText = validationMessage;
-  field.previousElementSibling.classList.remove('hidden');
+  field.previousElementSibling.innerText = validationMessage;field.previousElementSibling.classList.remove('hidden');
 }
 
 
@@ -75,10 +72,7 @@ function onSubmit(e) {
 
 
 function saveAnställd() {
-  const Anställd = {
-    Anställd: lista.Anställd.value,
-    Personnummer: lista.Personnummer.value,
-    Telefonnummer: lista.Telefonnummer.value,
+  const Anställd = {Anställd: lista.Anställd.value,Personnummer: lista.Personnummer.value,Telefonnummer: lista.Telefonnummer.value,
   };
    
 api.create(Anställd).then((Anställd) => {
@@ -88,9 +82,7 @@ api.create(Anställd).then((Anställd) => {
     }
   });
 
-  lista.Anställd.value="" ;
-  lista.Personnummer.value="" ;
-  lista.Personnummer.value="";
+  lista.Anställd.value="" ;lista.Personnummer.value="" ;lista.Personnummer.value="";
 }
 
 function renderList() {
@@ -106,13 +98,11 @@ function renderList() {
   });
 }
 
-
 function deleteAnställd(id) {
   api.remove(id).then(() => {
     renderList();
   });
 }
-
 
 renderList();
 
